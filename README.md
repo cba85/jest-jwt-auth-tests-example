@@ -1,9 +1,13 @@
-# Jest tests example ESModule
+# Jest JWT Auth tests example
 
-Jest tests example for a "fake" API using only a POST /login route.
+> For education only
+
+Jest tests example for a API using JWT authentication.
 
 * Unit tests
 * Integration tests (using supertest package)
+
+Uses ESModules (import).
 
 ## Install
 
@@ -13,18 +17,20 @@ $ npm install
 
 ### Database
 
-Generate database schema:
+Generate database schema (migration):
 
 ```sh
-$ node db/schema.js
+$ node db/migration.js
 ```
 
 ## Usage
 
+You need to set a `JWT_SECRET` environment variable.
+
 ```sh
-$ node index.js
+$ JWT_SECRET=secret node index.js
 # Or
-$ nodemon
+$ npm run dev
 ```
 
 ## Tests
