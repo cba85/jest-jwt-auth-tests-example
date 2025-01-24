@@ -1,7 +1,7 @@
 {
   "type": "module",
   "scripts": {
-    "test": "jest --transformIgnorePatterns \"node_modules/(?!@babel)\" --verbose",
+    "test": "PORT=3001 jest --transformIgnorePatterns \"node_modules/(?!@babel)\" --verbose",
     "coverage": "jest --transformIgnorePatterns \"node_modules/(?!@babel)\" --coverage"
   },
   "dependencies": {

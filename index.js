@@ -1,10 +1,11 @@
 import Database from "better-sqlite3";
 import express from "express";
 
+import authenticated from "./src/auth/authenticated.js";
 import loginValidation from "./src/validations/login.js";
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 const db = new Database("database.db");
 db.pragma("journal_mode = WAL");
@@ -34,10 +35,14 @@ app.post("/auth/login", (req, res) => {
     return res.sendStatus(401);
   }
 
+  if (!authenticated(req.body.password, user.password)) {
+    return res.sendStatus(401);
+  }
+
   return res.status(200).json({ token });
 });
 
 // Server
-app.listen(port, () => {
-  console.log(`http://127.0.0.1:${port}`);
+export default app.listen(port, () => {
+  //console.log(`http://127.0.0.1:${port}`);
 });
