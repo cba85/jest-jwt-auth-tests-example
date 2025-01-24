@@ -2,12 +2,12 @@
 
 > For education only
 
-Jest tests example for a API using JWT authentication.
+Jest tests example for a API using JWT authentication (register, login).
 
 * Unit tests
 * Integration tests (using supertest package)
 
-Uses ESModules (import).
+Uses ES Modules (import).
 
 ## Install
 
@@ -20,7 +20,7 @@ $ npm install
 Generate database schema (migration):
 
 ```sh
-$ node db/migration.js
+$ npm run migrate
 ```
 
 ## Usage
@@ -28,16 +28,18 @@ $ node db/migration.js
 You need to set a `JWT_SECRET` environment variable.
 
 ```sh
-$ JWT_SECRET=secret node index.js
-# Or
 $ npm run dev
 ```
 
 ## Tests
 
+You need to set a `NODE_ENV` environment variable to `test` value.
+
 ```sh
 $ npm run test
 ```
+
+Set `maxWorkers=1` to fix `listen EADDRINUSE: address already in use :::3001` error: https://stackoverflow.com/questions/54422849/jest-testing-multiple-test-file-port-3000-already-in-use
 
 ### Coverage
 

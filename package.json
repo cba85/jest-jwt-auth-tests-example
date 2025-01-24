@@ -1,9 +1,10 @@
 {
   "type": "module",
   "scripts": {
-    "dev": "JWT_SECRET=secret nodemon",
-    "test": "PORT=3001 JWT_SECRET=secret jest --transformIgnorePatterns \"node_modules/(?!@babel)\" --verbose",
-    "coverage": "jest --transformIgnorePatterns \"node_modules/(?!@babel)\" --coverage"
+    "migrate": "node db/migrate.js",
+    "dev": "NODE_ENV=local JWT_SECRET=secret nodemon",
+    "test": "NODE_ENV=test PORT=3001 JWT_SECRET=secret jest --transformIgnorePatterns \"node_modules/(?!@babel)\"",
+    "coverage": "NODE_ENV=test PORT=3001 JWT_SECRET=secret jest --transformIgnorePatterns \"node_modules/(?!@babel)\" --coverage"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

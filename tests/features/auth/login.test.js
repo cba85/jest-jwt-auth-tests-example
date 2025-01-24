@@ -6,7 +6,7 @@ import app from "../../../index.js";
 const endpoint = "/auth/login";
 
 describe("Login", () => {
-  afterAll(() => {
+  afterAll(async () => {
     app.close();
   });
 

@@ -3,14 +3,22 @@ import Database from "better-sqlite3";
 import express from "express";
 import jwt from "jsonwebtoken";
 
-import authenticated from "./src/auth/authenticated.js";
+import { addTestUser, createUserTable } from "./db/migrations/user.js";
 import loginValidation from "./src/validations/login.js";
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-const db = new Database("database.db");
-db.pragma("journal_mode = WAL");
+let db;
+
+if (process.env.NODE_ENV == "test") {
+  db = new Database(":memory:");
+  createUserTable(db);
+  addTestUser(db);
+} else {
+  db = new Database("database.db");
+  db.pragma("journal_mode = WAL");
+}
 
 app.use(express.json());
 
@@ -21,15 +29,7 @@ app.get("/", (req, res) => {
 
 // Register
 app.post("/auth/register", (req, res) => {
-  /*
-  const emailSchema = z.string().email();
-  const passwordSchema = z.string().min(8);
-
-  try {
-    emailSchema.parse(req.body.email);
-    passwordSchema.parse(req.body.password);
-  } catch (error) {
-    //console.error(error);
+  if (!loginValidation(req.body)) {
     return res.sendStatus(422);
   }
 
@@ -47,12 +47,10 @@ app.post("/auth/register", (req, res) => {
       password: hash,
     });
   } catch (error) {
-    // 5. Gérer l'erreur si l'utilisateur existe déjà [409]
     console.error(error);
     return res.sendStatus(409);
   }
 
-  // 7. Create JWT token
   const user = db
     .prepare(
       "SELECT id, created_at, email FROM users WHERE id = last_insert_rowid()"
@@ -60,9 +58,6 @@ app.post("/auth/register", (req, res) => {
     .get();
 
   const token = jwt.sign(user, process.env.JWT_SECRET);
-
-
-  */
 
   return res.status(201).json({ token: token });
 });
@@ -89,7 +84,6 @@ app.post("/auth/login", (req, res) => {
     return res.sendStatus(401);
   }
 
-  // Create JWT token
   const payload = {
     id: user.id,
     createdAt: user.created_at,
